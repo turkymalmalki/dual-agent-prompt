@@ -68,7 +68,8 @@ if run_clicked:
                 st.download_button("⬇ Download JSON", json_str, "prompt.json", "application/json")
         except Exception as e:
             st.error(f"Error: {str(e)}")
-            else:
+
+else:
     # ── Empty state (Welcome Screen) ──
     st.markdown(
         """
