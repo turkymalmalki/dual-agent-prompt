@@ -1,5 +1,5 @@
 """
-graph.py — Dual-Agent Prompt Engineering System (Claude 3.5 Sonnet Stable Edition)
+graph.py — Dual-Agent Prompt Engineering System (Claude 3 Haiku Edition)
 """
 from __future__ import annotations
 import json
@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 # CONSTANTS
 # ─────────────────────────────────────────────
 MAX_REVISIONS = 3
+# الموديل هايكو (الأسرع والأكثر توافقاً مع الحسابات الجديدة)
+MODEL_NAME = "claude-3-haiku-20240307"
 
 # ─────────────────────────────────────────────
 # STRUCTURED OUTPUT SCHEMA
@@ -66,18 +68,15 @@ def build_expert_system_prompt(domain: str, rag_context: str) -> str:
 # LLM FACTORY
 # ─────────────────────────────────────────────
 def get_llm(temperature: float = 0.7) -> ChatAnthropic:
-    # استخدام المعرّف الرسمي الدقيق لنموذج كلود 3.5 سونيت
     return ChatAnthropic(
-        model="claude-3-5-sonnet-20240620", 
+        model=MODEL_NAME, 
         temperature=temperature,
-        timeout=None,
-        max_retries=2
+        timeout=None
     )
 
 def get_extraction_llm() -> ChatAnthropic:
-    # استخدام المعرّف الرسمي لعملية استخراج البيانات المهيكلة
     llm = ChatAnthropic(
-        model="claude-3-5-sonnet-20240620", 
+        model=MODEL_NAME, 
         temperature=0.0
     )
     return llm.with_structured_output(SevenLayerPrompt)
@@ -86,7 +85,6 @@ def get_extraction_llm() -> ChatAnthropic:
 # NODES
 # ─────────────────────────────────────────────
 def _build_engineer_round_directive(revision: int, task: str, domain: str) -> HumanMessage:
-    current_round = revision + 1
     if revision == 0:
         return HumanMessage(content=f"[ROUND 1] Task: {task}\nDomain: {domain}\nAsk your foundational questions.")
     elif revision == 1:
