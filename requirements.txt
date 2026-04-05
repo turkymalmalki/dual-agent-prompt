@@ -1,8 +1,7 @@
 streamlit
 langgraph
 langchain
-langchain-anthropic
-langchain-core
+langchain-anthropic>=0.1.11
 pydantic
 python-dotenv
 pypdf
