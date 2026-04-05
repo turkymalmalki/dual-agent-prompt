@@ -68,3 +68,23 @@ if run_clicked:
                 st.download_button("⬇ Download JSON", json_str, "prompt.json", "application/json")
         except Exception as e:
             st.error(f"Error: {str(e)}")
+            else:
+    # ── Empty state (Welcome Screen) ──
+    st.markdown(
+        """
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh; text-align: center;">
+            <div style="font-size:3.5rem;margin-bottom:1rem;">⚙️</div>
+            <div style="font-size:1.4rem;font-weight:bold;margin-bottom:1rem;color:#e2e8f0;letter-spacing:0.05em;">
+                Ready to Engineer
+            </div>
+            <div style="font-size:0.9rem;color:#94a3b8;line-height:1.8;max-width:500px;">
+                1. Enter your <strong>API key</strong> in the sidebar.<br>
+                2. Describe your <strong>task</strong>.<br>
+                3. Select an <strong>expert domain</strong>.<br>
+                4. Optionally upload a <strong>reference document</strong> for grounding.<br>
+                5. Hit <strong style="color:#4f8ef7;">▶ Run Pipeline</strong>.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
