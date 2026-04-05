@@ -1,5 +1,5 @@
 """
-graph.py — Dual-Agent Prompt Engineering System (Claude 3.5 Sonnet Edition)
+graph.py — Dual-Agent Prompt Engineering System (Claude 3.5 Sonnet Stable Edition)
 """
 from __future__ import annotations
 import json
@@ -52,10 +52,12 @@ def build_expert_system_prompt(domain: str, rag_context: str) -> str:
     return base
 
 def get_llm(temperature: float = 0.7) -> ChatAnthropic:
-    return ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=temperature)
+    # تم التحديث لضمان التوافق مع API شركة Anthropic
+    return ChatAnthropic(model="claude-3-5-sonnet-latest", temperature=temperature)
 
 def get_extraction_llm() -> ChatAnthropic:
-    llm = ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=0.0)
+    # تم التحديث لضمان التوافق مع API شركة Anthropic
+    llm = ChatAnthropic(model="claude-3-5-sonnet-latest", temperature=0.0)
     return llm.with_structured_output(SevenLayerPrompt)
 
 def _build_engineer_round_directive(revision: int, task: str, domain: str) -> HumanMessage:
@@ -86,6 +88,8 @@ def expert_node(state: AgentState) -> dict:
 def extraction_node(state: AgentState) -> dict:
     extraction_llm = get_extraction_llm()
     engineer_messages = [m for m in state["messages"] if isinstance(m, AIMessage) and m.name == "Engineer"]
+    if not engineer_messages:
+        raise ValueError("No Engineer messages found.")
     final_draft = engineer_messages[-1].content
     prompt = [
         SystemMessage(content="Extract the 7-layer prompt faithfully into the JSON schema."),
